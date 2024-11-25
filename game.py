@@ -46,11 +46,14 @@ class Game:
         # Create exits for rooms
 
         forest.exits = {"N" : cave, "E" : tower, "S" : castle, "O" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : swamp, "O" : forest}
+        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
         cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
         cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
         swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
         castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
+
+    # Modifications dans la méthode setup()
+
 
         # Setup player and starting room
 
@@ -69,10 +72,11 @@ class Game:
 
     # Process the command entered by the player
     def process_command(self, command_string) -> None:
-
+       
+        if not command_string.strip():
+            return
         # Split the command string into a list of words
         list_of_words = command_string.split(" ")
-
         command_word = list_of_words[0]
 
         # If the command is not recognized, print an error message

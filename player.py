@@ -1,5 +1,48 @@
 # Define the Player class.
 class Player():
+    """
+    Représente un joueur dans un système de navigation textuelle.
+
+    Cette classe permet de modéliser un joueur qui peut se déplacer entre 
+    différentes pièces dans un environnement défini.
+
+    Attributs:
+        name (str): Le nom du joueur.
+        current_room (Room): La pièce actuelle dans laquelle se trouve le joueur.
+
+    Méthodes:
+        __init__(name):
+            Initialise une instance de la classe avec un nom et une pièce actuelle initiale (None).
+        move(direction):
+            Permet au joueur de se déplacer vers une autre pièce dans une direction donnée.
+
+    Exceptions:
+        Cette classe ne lève pas directement d'exception, mais la méthode `move` 
+        suppose que les sorties dans `current_room` sont correctement définies.
+
+    Exemples d'utilisation:
+    >>> player = Player("Alex")
+    >>> player.name
+    'Alex'
+    >>> player.current_room is None
+    True
+    >>> salon = Room("Salon", "un salon spacieux et lumineux.")
+    >>> cuisine = Room("Cuisine", "une cuisine bien équipée.")
+    >>> salon.exits['nord'] = cuisine
+    >>> player.current_room = salon
+    >>> player.move("nord")
+    ...
+    Vous êtes une cuisine bien équipée.
+    
+    Sorties: 
+    True
+    >>> player.current_room == cuisine
+    True
+    >>> player.move("sud")
+    ...
+    Aucune porte dans cette direction !
+    False
+    """
 
     # Define the constructor.
     def __init__(self, name):
