@@ -30,7 +30,77 @@ class Game:
         
         # Setup rooms
 
-        forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
+        forest = Room("Forest", "dans une forêt dense. Vous entendez une biche à travers les fougères! Lancez votre attaque !!")
+        self.rooms.append(forest)
+        cave = Room("Cave", "dans la tanière profonde et sombre de la mère de votre louvetaux. Vous devez passer à l'action pour le faire évoluer.")
+        self.rooms.append(cave)
+        river = Room("River", "face à une large rivière profonde. Votre loup sera t il capable de la traverser.")
+        self.rooms.append(river)
+        small_river = Room("Small_River", "face à une petite rivière peu profonde. Votre loup sera t il capable de la traverser.")
+        self.rooms.append(small_river)
+        tree = Room("tree", "face à une large chêne. Votre loup à aperçu un dindon à son sommet.")
+        self.rooms.append(tree)
+        bear_cave = Room("Bear_cave", "face à une large grottesombre et odorante. C'est la grotte du plus gros ours du coin ! Votre loup sera t il capable de voler la nourriture de l'ours ?")
+        self.rooms.append(bear_cave)
+        prairie = Room("prairie", "face à un beau troupeaux de moutons. C'est peut-être l'occasion d'attaquer ! Mais attention à vous un chien monte la garde et peut tuer votre petit loup ")
+        self.rooms.append(prairie)
+        mountain = Room("mountain", "au milieu d'une montagne entouré de randonneur. Votre petit loup ne doit pas être vu!")
+        self.rooms.append(mountain)
+        personnal_cave = Room("personnal_cave", " ")
+        self.rooms.append(personnal_cave)
+        great_cave = Room("great_cave", "face au loup le plus sage de tout le secteur. Il est la pour vous donnez les conseils popur évoluer et gagner en compétence")
+        self.rooms.append(great_cave)
+        human1 = Room("human1", "Les humains vous attanquent !!")
+        self.rooms.append(human1)
+        human2 = Room("human2", "Les humains vous attanquent !!")
+        self.rooms.append(human2)
+        human3 = Room("human3", "Les humains vous attanquent !!")
+        self.rooms.append(human3)
+        safe1 = Room("safe1", "Vous n'êtes pas passé loin des hommes !")
+        self.rooms.append(safe1)
+        safe2 = Room("safe2", "Vous n'êtes pas passé loin des hommes !")
+        self.rooms.append(safe2)
+        festin1 = Room("festin1", "Vous avez de quoi avoir des conseils du grand loup")
+        self.rooms.append(festin1)
+        festin2 = Room("festin2", "Vous avez de quoi avoir des conseils du grand loup")
+        self.rooms.append(festin2)
+        festin3 = Room("festin3", "Vous avez de quoi avoir des conseils du grand loup")
+        self.rooms.append(festin3)
+        festin4 = Room("festin4", "Vous avez de quoi avoir des conseils du grand loup")
+        self.rooms.append(festin4)
+        festin5 = Room("festin5", "Vous avez de quoi avoir des conseils du grand loup")
+        self.rooms.append(festin5)
+        # Create exits for rooms
+
+        """"forest.exits = {"N" : cave, "E" : tower, "S" : castle, "O" : None}
+        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
+        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
+        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
+        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
+        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}"""
+
+        forest.exits={"N":None, "E":cave, "S":None,"O":None,"NO":None,"NE":None,"SO":festin2,"SE":None,"U":None,"D":None}
+        cave.exits={"N":mountain,"E":prairie,"S":bear_cave,"O":forest,"NO":river ,"NE":small_river,"SO":None,"SE":None,"U":tree,"D":great_cave}
+        prairie.exits={"N":None,"E":None,"S":festin3,"O":cave,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":None}
+        mountain.exits={"N":None,"E":None,"S":cave,"O":None,"NO":human1,"NE":safe1,"SO":None,"SE":None,"U":None,"D":None}
+        bear_cave.exits={"N":cave,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":None}
+        tree.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":cave}
+        small_river={"N":festin5,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":cave,"SE":None,"U":None,"D":None}
+        river.exits={"N":festin1,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":forest,"SE":cave,"U":None,"D":None}
+        #personnal_cave.exits={"N" : , "E" : , "S" : , "O" : ,"NO": ,"NE":,"SO":,"SE":,"U":,"D":}
+        great_cave.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":cave,"D":None}
+        human1.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":mountain,"U":None,"D":None}
+        human2.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":safe1,"SE":None,"U":None,"D":None}
+        human3.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":safe2,"U":None,"D":None}
+        safe1.exits={"N":None,"E":None,"S":None,"O":None,"NO":safe2,"NE":human2,"SO":mountain,"SE":None,"U":None,"D":None}
+        safe2.exits={"N":None,"E":None,"S":None,"O":None,"NO":human3,"NE":festin4,"SO":None,"SE":safe1,"U":None,"D":None}
+        festin1.exits={"N":None,"E":None,"S":river,"O":None,"NO":None,"NE":None,"SO":forest,"SE":None,"U":None,"D":None}
+        festin2.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":forest,"SO":None,"SE":None,"U":None,"D":None}
+        festin3.exits={"N":prairie,"E":None, "S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":None}
+        festin4.exits={"N":None,"E":None, "S":None,"O":None,"NO":None,"NE":None,"SO":safe2,"SE":None,"U":None,"D":None}
+        festin5.exits={"N":None,"E":None, "S":small_river,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":None}
+
+        """forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
         self.rooms.append(forest)
         tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
         self.rooms.append(tower)
@@ -45,20 +115,19 @@ class Game:
 
         # Create exits for rooms
 
-        forest.exits = {"N" : cave, "E" : tower, "S" : castle, "O" : None}
+        forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None}
         tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
         cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
         cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
         swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
+        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}"""
 
     # Modifications dans la méthode setup()
-
 
         # Setup player and starting room
 
         self.player = Player(input("\nEntrez votre nom: "))
-        self.player.current_room = swamp
+        self.player.current_room = cave
 
     # Play the game
     def play(self):
