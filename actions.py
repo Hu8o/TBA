@@ -93,6 +93,21 @@ class Actions:
         game.finished = True
         return True
 
+    def back(game, list_of_words, number_of_parameters):
+
+        player = game.player
+        l = len(list_of_words)
+
+        if len(game.history) < 2:
+            print("Vous ne pouvez pas revenir en arrière, c'est la pièce de départ.")
+            return False
+
+        game.history.pop()  # Retirerrr
+        game.current_room = game.history[-1]  # back dans la pièce
+        print(f"Vous êtes revenu dans {game.current_room}.")
+        return True
+
+
     def help(game, list_of_words, number_of_parameters):
         """
         Print the list of available commands.
