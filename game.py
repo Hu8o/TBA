@@ -11,10 +11,26 @@ class Game:
 
     # Constructor
     def __init__(self):
+        
         self.finished = False
         self.rooms = []
         self.commands = {}
         self.player = None
+
+        self.valide_directions = ["N", "E", "S", "O","NE","NO","SE","SO","D","U"]
+
+        self.direction_syn = {
+            "N": "N", "NORD": "N", "Nord": "N", "nord": "N", "n":"N",
+            "E": "E", "EST": "E", "Est": "E", "est": "E","e":"E",
+            "S": "S", "SUD": "S", "Sud": "S", "sud": "S","s":"S",
+            "O": "O", "OUEST": "O", "Ouest": "O", "ouest": "O","o":"O",
+            "D":"D","d":"D",
+            "U":"U","u":"U",
+            "NE":"NE","Nord Est":"NE","nord est":"NE","NORD EST":"NE","ne":"NE",
+            "NO":"NO","no":"NO","nord ouest":"NO","NORD OUEST":"NO","no":"NO","Nord Ouest":"NO",
+            "SE":"SE","se":"SE","Sud Est":"SE","sud est":"SE","SUD EST":"SE",
+            "SO":"SO","so":"SO","sud ouest":"SO","SUD OUEST":"SO","Sud Ouest":"SO"
+        }
     
     # Setup the game
     def setup(self):
@@ -32,19 +48,19 @@ class Game:
 
         forest = Room("Forest", "dans une forêt dense. Vous entendez une biche à travers les fougères! Lancez votre attaque !!")
         self.rooms.append(forest)
-        cave = Room("Cave", "dans la tanière profonde et sombre de la mère de votre louvetaux. Vous devez passer à l'action pour le faire évoluer.")
+        cave = Room("Cave", "dans la tanière profonde et sombre de la mère de votre louvetau. Vous devez passer à l'action pour le faire évoluer.")
         self.rooms.append(cave)
         river = Room("River", "face à une large rivière profonde. Votre loup sera t il capable de la traverser.")
         self.rooms.append(river)
         small_river = Room("Small_River", "face à une petite rivière peu profonde. Votre loup sera t il capable de la traverser.")
         self.rooms.append(small_river)
-        tree = Room("tree", "face à une large chêne. Votre loup à aperçu un dindon à son sommet.")
+        tree = Room("tree", "face à une large chêne. Votre loup a aperçu un dindon à son sommet.")
         self.rooms.append(tree)
         bear_cave = Room("Bear_cave", "face à une large grottesombre et odorante. C'est la grotte du plus gros ours du coin ! Votre loup sera t il capable de voler la nourriture de l'ours ?")
         self.rooms.append(bear_cave)
         prairie = Room("prairie", "face à un beau troupeaux de moutons. C'est peut-être l'occasion d'attaquer ! Mais attention à vous un chien monte la garde et peut tuer votre petit loup ")
         self.rooms.append(prairie)
-        mountain = Room("mountain", "au milieu d'une montagne entouré de randonneur. Votre petit loup ne doit pas être vu!")
+        mountain = Room("mountain", "au milieu d'une montagne entouré de randonneurs. Votre petit loup ne doit pas être vu!")
         self.rooms.append(mountain)
         personnal_cave = Room("personnal_cave", " ")
         self.rooms.append(personnal_cave)

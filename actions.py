@@ -30,23 +30,10 @@ class Actions:
 
         Returns:
             bool: True if the command was executed successfully, False otherwise.
-
-        Examples:
-        
-        >>> from game import Game
-        >>> game = Game()
-        >>> game.setup()
-        >>> go(game, ["go", "N"], 1)
-        True
-        >>> go(game, ["go", "N", "E"], 1)
-        False
-        >>> go(game, ["go"], 1)
-        False
-
         """
-        
         player = game.player
         l = len(list_of_words)
+
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
@@ -54,10 +41,18 @@ class Actions:
             return False
 
         # Get the direction from the list of words.
-        direction = list_of_words[1]
+        direction_input = list_of_words[1]
+        direction = game.direction_syn.get(direction_input, None)
+
+        # Validate the direction.
+        if direction is None:
+            print(f"\nErreur : '{direction_input}' n'est pas une direction valide. Les directions valides sont : {', '.join(game.valide_directions)}.\n")
+            return False
+
         # Move the player in the direction specified by the parameter.
         player.move(direction)
         return True
+
 
     def quit(game, list_of_words, number_of_parameters):
         """
