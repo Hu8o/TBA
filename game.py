@@ -17,6 +17,11 @@ class Game:
         self.commands = {}
         self.player = None
 
+        
+    
+    # Setup the game
+    def setup(self):
+
         self.valide_directions = ["N", "E", "S", "O","NE","NO","SE","SO","D","U"]
 
         self.direction_syn = {
@@ -26,14 +31,11 @@ class Game:
             "O": "O", "OUEST": "O", "Ouest": "O", "ouest": "O","o":"O",
             "D":"D","d":"D",
             "U":"U","u":"U",
-            "NE":"NE","Nord Est":"NE","nord est":"NE","NORD EST":"NE","ne":"NE",
-            "NO":"NO","no":"NO","nord ouest":"NO","NORD OUEST":"NO","no":"NO","Nord Ouest":"NO",
-            "SE":"SE","se":"SE","Sud Est":"SE","sud est":"SE","SUD EST":"SE",
-            "SO":"SO","so":"SO","sud ouest":"SO","SUD OUEST":"SO","Sud Ouest":"SO"
+            "NE":"NE","Nord-Est":"NE","nord-est":"NE","NORD-EST":"NE","ne":"NE",
+            "NO":"NO","no":"NO","nord-ouest":"NO","NORD-OUEST":"NO","no":"NO","Nord-Ouest":"NO",
+            "SE":"SE","se":"SE","Sud-Est":"SE","sud-est":"SE","SUD-EST":"SE",
+            "SO":"SO","so":"SO","sud-ouest":"SO","SUD-OUEST":"SO","Sud-Ouest":"SO"
         }
-    
-    # Setup the game
-    def setup(self):
 
         # Setup commands
 
@@ -101,7 +103,7 @@ class Game:
         mountain.exits={"N":None,"E":None,"S":cave,"O":None,"NO":human1,"NE":safe1,"SO":None,"SE":None,"U":None,"D":None}
         bear_cave.exits={"N":cave,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":None}
         tree.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":cave}
-        small_river={"N":festin5,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":cave,"SE":None,"U":None,"D":None}
+        small_river.exits={"N":festin5,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":cave,"SE":None,"U":None,"D":None}
         river.exits={"N":festin1,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":forest,"SE":cave,"U":None,"D":None}
         #personnal_cave.exits={"N" : , "E" : , "S" : , "O" : ,"NO": ,"NE":,"SO":,"SE":,"U":,"D":}
         great_cave.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":cave,"D":None}
