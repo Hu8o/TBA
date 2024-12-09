@@ -97,11 +97,12 @@ class Actions:
 
     def back(game, list_of_words, number_of_parameters):
         
-        if len(game.player.history) > 1:
+        if len(game.player.history) >1:
+            #print(game.player.history[-1])
             last_room = game.player.history.pop()
             game.player.current_room = game.player.history[-1]
-            print(f"\nVous êtes retourné dans {game.player.current_room.name} \n")
-            print("\nVous avez déjà visité les pièces suivantes :")
+            print(f"\nVous êtes retourné dans la {game.player.current_room}\n")
+            #print("\nVous avez déjà visité les pièces suivantes :")
             print(game.player.get_history())
         else:
             print("\nVous ne pouvez pas revenir en arrière car il n'y a pas d'historique disponible.\n")
