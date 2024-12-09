@@ -48,8 +48,9 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.current_room = None
+        self.history=[]
 
-    
+ 
     # Define the move method.
     def move(self, direction):
         # Get the next room from the exits dictionary of the current room.
@@ -60,10 +61,20 @@ class Player():
             print("\nAucune porte dans cette direction !\n")
             return False
         
-        # Set the current room to the next room.
         self.current_room = next_room
-        self.history.append(next_room)
+
+        if self.current_room not in self.history:
+            self.history.append(self.current_room.name)
+        
         print(self.current_room.get_long_description())
+
         return True
 
-    
+        # Mettre à jour la pièce actuelle
+        self.current_room = new_room
+
+
+    def get_history(self):
+        if not self.history:
+            return "Vous n'avez visité aucune pièce pour l'instant."
+        return "Vous avez déjà visité les pièces suivantes:\n" + "\n".join(f"    - {room}" for room in self.history)

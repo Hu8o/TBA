@@ -51,6 +51,8 @@ class Actions:
 
         # Move the player in the direction specified by the parameter.
         player.move(direction)
+        print(player.get_history())
+
         return True
 
 
@@ -94,20 +96,17 @@ class Actions:
         return True
 
     def back(game, list_of_words, number_of_parameters):
+        
+        if len(game.player.history) > 1:
+            last_room = game.player.history.pop()
+            game.player.current_room = game.player.history[-1]
+            print(f"\nVous êtes retourné dans {game.player.current_room.name} \n")
+            print("\nVous avez déjà visité les pièces suivantes :")
+            print(game.player.get_history())
+        else:
+            print("\nVous ne pouvez pas revenir en arrière car il n'y a pas d'historique disponible.\n")
 
-        player = game.player
-        l = len(list_of_words)
-
-        if len(game.history) < 2:
-            print("Vous ne pouvez pas revenir en arrière, c'est la pièce de départ.")
-            return False
-
-        game.history.pop()  # Retirerrr
-        game.current_room = game.history[-1]  # back dans la pièce
-        print(f"Vous êtes revenu dans {game.current_room}.")
-        return True
-
-
+    
     def help(game, list_of_words, number_of_parameters):
         """
         Print the list of available commands.
