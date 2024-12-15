@@ -62,20 +62,38 @@ class Player():
             print("\nAucune porte dans cette direction !\n")
             return False
         
-        
+        # Mettre à jour la pièce actuelle
+        self.current_room = next_room
+
 
         if self.current_room not in self.history:
             self.history.append(self.current_room.name)
-        
         print(self.current_room.get_long_description())
-
         return True
+ 
 
-        # Mettre à jour la pièce actuelle
-        self.current_room = new_room
+    def back(self):
+        """
+        Permet au joueur de revenir à la pièce précédente.
 
+        Returns:
+            bool: True si le retour en arrière a réussi, False sinon.
+        """
+        if self.previous_room is None:
+            print("\nErreur : Vous ne pouvez pas revenir en arrière car vous n'avez pas encore effectué de déplacement.\n")
+            return False
+
+        # Inverser la pièce actuelle et la pièce précédente
+        self.current_room, self.previous_room = self.previous_room, self.current_room
+
+        print(self.current_room.get_long_description())
+        return True
 
     def get_history(self):
         if not self.history:
             return "Vous n'avez visité aucune pièce pour l'instant."
-        return "Vous avez déjà visité les pièces suivantes:\n" + "\n".join(f"    - {room}" for room in self.history)
+
+        history_string = "\nVous avez déjà visité les pièces suivantes:\n"
+        for room_name in self.history:
+            history_string += f"    - {room_name}\n"
+        return history_string

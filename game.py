@@ -38,17 +38,13 @@ class Game:
         }
 
         # Setup commands
-
-        help = Command("help", " : afficher cette aide", Actions.help, 0)
-        self.commands["help"] = help
-        quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
-        self.commands["quit"] = quit
-        go = Command("go", "<direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
-        self.commands["go"] = go
-        back = Command("back", " : revenir à la pièce précédente", Actions.back, 0)
-        self.commands["back"] = back
-
-        
+        self.commands = {
+            "go": Command("go", " - Déplace le joueur dans une direction.", Actions.go, 1),
+            "quit": Command("quit", " - Quitte le jeu.", Actions.quit, 0),
+            "help": Command("help", " - Affiche la liste des commandes disponibles.", Actions.help, 0),
+            "history": Command("history", " - Affiche l'historique des pièces visitées.", Actions.history, 0)
+            "back": Command("back", " - Retourne à la pièce précédente.", Actions.back, 0)}
+       
         # Setup rooms
 
         forest = Room("Forest", "dans une forêt dense. Vous entendez une biche à travers les fougères! Lancez votre attaque !!")

@@ -96,16 +96,31 @@ class Actions:
         return True
 
     def back(game, list_of_words, number_of_parameters):
-        
-        if len(game.player.history) >1:
-            #print(game.player.history[-1])
-            last_room = game.player.history.pop()
-            game.player.current_room = game.player.history[-1]
-            print(f"\nVous êtes retourné dans la {game.player.current_room}\n")
-            #print("\nVous avez déjà visité les pièces suivantes :")
+        """
+        Permet au joueur de revenir à la pièce précédente.
+
+        Args:
+            game (Game): Le jeu en cours.
+            list_of_words (list): Les mots de la commande.
+            number_of_parameters (int): Nombre de paramètres attendus.
+
+        Returns:
+            bool: True si la commande est exécutée avec succès, False sinon.
+        """
+        l = len(list_of_words)
+        # Vérifier le nombre de paramètres
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+
+        # Tenter de revenir en arrière
+        if game.player.back():
+            # Afficher l'historique après le retour en arrière
             print(game.player.get_history())
-        else:
-            print("\nVous ne pouvez pas revenir en arrière car il n'y a pas d'historique disponible.\n")
+            return True
+        return False
+
 
     
     def help(game, list_of_words, number_of_parameters):
@@ -146,4 +161,27 @@ class Actions:
         for command in game.commands.values():
             print("\t- " + str(command))
         print()
+        return True
+
+        def history(game, list_of_words, number_of_parameters):
+        """
+        Affiche l'historique des pièces visitées par le joueur.
+
+        Args:
+            game (Game): Le jeu en cours.
+            list_of_words (list): Les mots de la commande.
+            number_of_parameters (int): Nombre de paramètres attendus.
+
+        Returns:
+            bool: True si la commande est exécutée avec succès, False sinon.
+        """
+        l = len(list_of_words)
+        # Vérifier le nombre de paramètres
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+
+        # Afficher l'historique du joueur
+        print(game.player.get_history())
         return True
