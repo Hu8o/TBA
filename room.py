@@ -1,5 +1,5 @@
 # Define the Room class.
-from inventory import Inventory
+from item import Inventory
 
 class Room:
 
@@ -58,6 +58,8 @@ class Room:
         self.description = description
         self.exits = {}
         self.inventory = Inventory() # Initialisation de l'inventaire à vide
+        self.items = []  # Initialisation des items de la pièce
+
 
     
     # Define the get_exit method.

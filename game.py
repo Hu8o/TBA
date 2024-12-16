@@ -43,7 +43,12 @@ class Game:
             "quit": Command("quit", " - Quitte le jeu.", Actions.quit, 0),
             "help": Command("help", " - Affiche la liste des commandes disponibles.", Actions.help, 0),
             "history": Command("history", " - Affiche l'historique des pièces visitées.", Actions.history, 0),
-            "back": Command("back", " - Retourne à la pièce précédente.", Actions.back, 0)}
+            "back": Command("back", " - Retourne à la pièce précédente.", Actions.back, 0),
+            "take": Command("take", "Permet de prendre un item dans la pièce actuelle.", Actions.take, 1),
+            "look": Command("look", "Pemret de voir les items dans la pièce actuelle.",Actions.look,1),
+            "drop": Command("drop", "Permet de déposer un item dans la pièce actuelle.", Actions.drop, 1),
+            "check":Command("check","Pemret de regarder le contenu de son sac", Actions.check,0)
+}
        
         # Setup rooms
 

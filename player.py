@@ -1,6 +1,6 @@
 # Define the Player class.
 
-from inventory import Inventory
+from item import Inventory
 
 class Player():
     """
@@ -48,12 +48,22 @@ class Player():
     """
 
     # Define the constructor.
-    def __init__(self, name):
+    def __init__(self, name,max_weight=10):
         self.name = name
         self.current_room = None
         self.previous_room=None
         self.history=[]
         self.inventory=Inventory()
+        self.max_weight = max_weight  # Poids maximum transportable
+
+    def current_inventory_weight(self):
+        """
+        Calcule le poids total des objets dans l'inventaire du joueur.
+
+        Returns:
+            float: Le poids total des objets.
+        """
+        return sum(item.weight for item in self.inventory)
 
  
     # Define the move method.
@@ -110,3 +120,12 @@ class Player():
 
     def get_inventory(self):
         return self.inventory.get_inventory()
+
+    def look(self):
+        """
+        Affiche les détails de la pièce actuelle, y compris les items présents.
+        """
+        if self.current_room is None:
+            print("Vous n'êtes pas dans une pièce.")
+            return
+        print(self.current_room.get_long_description())

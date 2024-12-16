@@ -176,7 +176,7 @@ class Actions:
         print(game.player.get_history())
         return True
 
-        def look(game, list_of_words, number_of_parameters):
+    def look(game, list_of_words, number_of_parameters):
         """
         Affiche la liste des objets présents dans la pièce actuelle du joueur.
 
@@ -218,3 +218,82 @@ class Actions:
         # Afficher les objets présents dans la pièce.
         print(current_room.get_inventory())
         return True
+
+    @staticmethod
+    def take(player, item_name):
+        """
+        Permet au joueur de prendre un item dans la pièce actuelle, sous réserve de la limite de poids.
+
+        Args:
+            player (Player): Le joueur.
+            item_name (str): Le nom de l'item à prendre.
+
+        Returns:
+            None
+        """
+        item_to_take = next((item for item in player.current_room.items if item.name == item_name),None)
+        if item_to_take:
+            # Vérifier la capacité de poids restante
+            if player.current_inventory_weight() + item_to_take.weight > player.max_weight:
+                print(f"\nErreur : Vous ne pouvez pas prendre '{item_name}' car cela dépasse votre capacité maximale de {player.max_weight} kg.")
+                return
+
+            # Ajouter l'objet à l'inventaire
+            player.inventory.append(item_to_take)
+            player.current_room.items.remove(item_to_take)
+            print(f"\nVous avez pris l'objet '{item_name}'.")
+        else:
+            print(f"\nErreur : L'objet '{item_name}' n'est pas présent dans cette pièce.")
+
+    @staticmethod
+    def drop(player, item_name):
+        """
+        Permet au joueur de déposer un item de son inventaire dans la pièce actuelle.
+
+        Args:
+            player (Player): Le joueur qui dépose l'item.
+            item_name (str): Le nom de l'item à déposer.
+
+        Returns:
+            bool: True si l'item a été déposé, False sinon.
+        """
+        current_room = player.current_room
+        if not current_room:
+            print("Vous n'êtes dans aucune pièce !")
+            return False
+
+        # Chercher l'item dans l'inventaire du joueur
+        item_to_drop = None
+        for item in player.inventory:
+            if item.name == item_name:
+                item_to_drop = item
+                break
+
+        if item_to_drop:
+            # Ajouter l'item dans la pièce
+            current_room.items.append(item_to_drop)
+            # Retirer l'item de l'inventaire du joueur
+            player.inventory.remove(item_to_drop)
+            print(f"Vous avez déposé {item_to_drop.name} dans {current_room.name}.")
+            return True
+        else:
+            print(f"{item_name} n'est pas dans votre inventaire.")
+            return False
+    
+    @staticmethod
+    def check(player):
+        """
+        Affiche la liste des items présents dans l'inventaire du joueur.
+
+        Args:
+            player (Player): Le joueur dont on vérifie l'inventaire.
+
+        Returns:
+            None
+        """
+        if not player.inventory:
+            print("\nVotre inventaire est vide.")
+        else:
+            print("\nVotre inventaire contient :")
+            for item in player.inventory:
+                print(f"- {item}")
