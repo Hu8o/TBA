@@ -1,4 +1,7 @@
 # Define the Player class.
+
+from inventory import Inventory
+
 class Player():
     """
     Représente un joueur dans un système de navigation textuelle.
@@ -48,15 +51,22 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.current_room = None
+        self.previous_room=None
         self.history=[]
+        self.inventory=Inventory()
 
  
     # Define the move method.
     def move(self, direction):
 
-        # Get the next room from the exits dictionary of the current room.
         next_room = self.current_room.exits[direction]
-        self.current_room = next_room
+        
+        if self.current_room is None:
+            print("\n Erreur:Le joueur n'est pas dans une pièce !\n")
+            return False
+
+        self.previous_room = self.current_room
+       
         # If the next room is None, print an error message and return False.
         if next_room is None:
             print("\nAucune porte dans cette direction !\n")
@@ -97,3 +107,6 @@ class Player():
         for room_name in self.history:
             history_string += f"    - {room_name}\n"
         return history_string
+
+    def get_inventory(self):
+        return self.inventory.get_inventory()

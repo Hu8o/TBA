@@ -163,18 +163,8 @@ class Actions:
         print()
         return True
 
-        def history(game, list_of_words, number_of_parameters):
-        """
-        Affiche l'historique des pièces visitées par le joueur.
-
-        Args:
-            game (Game): Le jeu en cours.
-            list_of_words (list): Les mots de la commande.
-            number_of_parameters (int): Nombre de paramètres attendus.
-
-        Returns:
-            bool: True si la commande est exécutée avec succès, False sinon.
-        """
+    def history(game, list_of_words, number_of_parameters):
+        
         l = len(list_of_words)
         # Vérifier le nombre de paramètres
         if l != number_of_parameters + 1:
@@ -184,4 +174,47 @@ class Actions:
 
         # Afficher l'historique du joueur
         print(game.player.get_history())
+        return True
+
+        def look(game, list_of_words, number_of_parameters):
+        """
+        Affiche la liste des objets présents dans la pièce actuelle du joueur.
+
+        Args:
+            game (Game): Le jeu en cours.
+            list_of_words (list): La liste des mots dans la commande.
+            number_of_parameters (int): Le nombre de paramètres attendu par la commande.
+
+        Returns:
+            bool: True si la commande a été exécutée avec succès, False sinon.
+
+        Examples:
+
+        >>> from game import Game
+        >>> game = Game()
+        >>> game.setup()
+        >>> look(game, ["look"], 0)
+        True
+        >>> look(game, ["look", "extra"], 0)
+        False
+        """
+        l = len(list_of_words)
+        
+        # Vérifier si le nombre de paramètres est correct.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+
+        # Obtenir la pièce actuelle du joueur.
+        player = game.player
+        current_room = player.current_room
+
+        # Si le joueur n'est dans aucune pièce, afficher un message d'erreur.
+        if current_room is None:
+            print("\nErreur : Le joueur n'est dans aucune pièce.\n")
+            return False
+
+        # Afficher les objets présents dans la pièce.
+        print(current_room.get_inventory())
         return True

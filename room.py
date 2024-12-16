@@ -1,4 +1,5 @@
 # Define the Room class.
+from inventory import Inventory
 
 class Room:
 
@@ -56,6 +57,8 @@ class Room:
         self.name = name
         self.description = description
         self.exits = {}
+        self.inventory = Inventory() # Initialisation de l'inventaire à vide
+
     
     # Define the get_exit method.
     def get_exit(self, direction):
@@ -77,4 +80,7 @@ class Room:
 
     # Return a long description of this room including exits.
     def get_long_description(self):
-        return f"\nVous êtes {self.description}\n\n{self.get_exit_string()}\n"
+       return f"\n Vous êtes {self.description}\n\n{self.get_exit_string()}\n"
+
+    def get_inventory(self):
+        return self.inventory.get_inventory()

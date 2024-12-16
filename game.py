@@ -42,7 +42,7 @@ class Game:
             "go": Command("go", " - Déplace le joueur dans une direction.", Actions.go, 1),
             "quit": Command("quit", " - Quitte le jeu.", Actions.quit, 0),
             "help": Command("help", " - Affiche la liste des commandes disponibles.", Actions.help, 0),
-            "history": Command("history", " - Affiche l'historique des pièces visitées.", Actions.history, 0)
+            "history": Command("history", " - Affiche l'historique des pièces visitées.", Actions.history, 0),
             "back": Command("back", " - Retourne à la pièce précédente.", Actions.back, 0)}
        
         # Setup rooms
