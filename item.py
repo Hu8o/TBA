@@ -11,6 +11,8 @@ class Item:
         __init__(name, description, weight) : Initialise les attributs de l'objet.
         __str__() : Retourne une représentation textuelle de l'objet.
     """
+    
+    
 
     def __init__(self, name, description, weight):
         """

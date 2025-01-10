@@ -1,7 +1,5 @@
 # Define the Player class.
 
-from item import Inventory
-
 class Player():
     """
     Représente un joueur dans un système de navigation textuelle.
@@ -12,49 +10,39 @@ class Player():
     Attributs:
         name (str): Le nom du joueur.
         current_room (Room): La pièce actuelle dans laquelle se trouve le joueur.
+        previous_room (Room): La dernière pièce visitée.
+        history (list): Liste des pièces déjà visitées.
+        inventory (dict): Inventaire du joueur, avec les noms des items comme clés 
+                          et les objets Item comme valeurs.
+        max_weight (float): Poids maximum que le joueur peut transporter.
 
     Méthodes:
-        __init__(name):
-            Initialise une instance de la classe avec un nom et une pièce actuelle initiale (None).
+        __init__(name, max_weight=10):
+            Initialise une instance de la classe avec un nom, un poids maximum 
+            et un inventaire vide.
         move(direction):
             Permet au joueur de se déplacer vers une autre pièce dans une direction donnée.
-
-    Exceptions:
-        Cette classe ne lève pas directement d'exception, mais la méthode `move` 
-        suppose que les sorties dans `current_room` sont correctement définies.
-
-    Exemples d'utilisation:
-    >>> player = Player("Alex")
-    >>> player.name
-    'Alex'
-    >>> player.current_room is None
-    True
-    >>> salon = Room("Salon", "un salon spacieux et lumineux.")
-    >>> cuisine = Room("Cuisine", "une cuisine bien équipée.")
-    >>> salon.exits['nord'] = cuisine
-    >>> player.current_room = salon
-    >>> player.move("nord")
-    ...
-    Vous êtes une cuisine bien équipée.
-    
-    Sorties: 
-    True
-    >>> player.current_room == cuisine
-    True
-    >>> player.move("sud")
-    ...
-    Aucune porte dans cette direction !
-    False
+        back():
+            Permet au joueur de revenir à la pièce précédente.
+        get_history():
+            Retourne l'historique des pièces visitées.
+        add_to_inventory(item):
+            Ajoute un item à l'inventaire du joueur.
+        remove_from_inventory(item_name):
+            Retire un item de l'inventaire du joueur.
+        current_inventory_weight():
+            Calcule le poids total des objets dans l'inventaire.
+        look():
+            Affiche les détails de la pièce actuelle.
     """
 
-    # Define the constructor.
-    def __init__(self, name,max_weight=10):
+    def __init__(self, name, max_weight=10):
         self.name = name
         self.current_room = None
-        self.previous_room=None
-        self.history=[]
-        self.inventory=Inventory()
-        self.max_weight = max_weight  # Poids maximum transportable
+        self.previous_room = None
+        self.history = []
+        self.inventory = {}  # Initialisation d'un inventaire vide
+        self.max_weight = 5  # Poids maximum transportable
 
     def current_inventory_weight(self):
         """
@@ -63,53 +51,36 @@ class Player():
         Returns:
             float: Le poids total des objets.
         """
-        return sum(item.weight for item in self.inventory)
+        return sum(item.weight for item in self.inventory.values())
 
- 
-    # Define the move method.
     def move(self, direction):
-
-        next_room = self.current_room.exits[direction]
-        
         if self.current_room is None:
-            print("\n Erreur:Le joueur n'est pas dans une pièce !\n")
+            print("\nErreur: Le joueur n'est pas dans une pièce !\n")
             return False
 
-        self.previous_room = self.current_room
-       
-        # If the next room is None, print an error message and return False.
+        next_room = self.current_room.exits.get(direction, None)
+
         if next_room is None:
             print("\nAucune porte dans cette direction !\n")
             return False
-        
-        # Mettre à jour la pièce actuelle
+
+        self.previous_room = self.current_room
         self.current_room = next_room
 
-
-        if self.current_room not in self.history:
+        if self.current_room.name not in self.history:
             self.history.append(self.current_room.name)
+
         print(self.current_room.get_long_description())
         return True
- 
 
-    def back(self):
+  
+    def get_history(self):
         """
-        Permet au joueur de revenir à la pièce précédente.
+        Retourne une description des pièces visitées par le joueur.
 
         Returns:
-            bool: True si le retour en arrière a réussi, False sinon.
+            str: Liste des pièces visitées.
         """
-        if self.previous_room is None:
-            print("\nErreur : Vous ne pouvez pas revenir en arrière car vous n'avez pas encore effectué de déplacement.\n")
-            return False
-
-        # Inverser la pièce actuelle et la pièce précédente
-        self.current_room, self.previous_room = self.previous_room, self.current_room
-
-        print(self.current_room.get_long_description())
-        return True
-
-    def get_history(self):
         if not self.history:
             return "Vous n'avez visité aucune pièce pour l'instant."
 
@@ -118,14 +89,55 @@ class Player():
             history_string += f"    - {room_name}\n"
         return history_string
 
-    def get_inventory(self):
-        return self.inventory.get_inventory()
+    def add_to_inventory(self, item):
+        """
+        Ajoute un item à l'inventaire du joueur.
 
-    def look(self):
+        Args:
+            item (Item): L'objet à ajouter.
+
+        Returns:
+            bool: True si l'ajout a réussi, False si le poids total est dépassé.
         """
-        Affiche les détails de la pièce actuelle, y compris les items présents.
+        if self.current_inventory_weight() + item.weight > self.max_weight:
+            print(f"\nVous ne pouvez pas ajouter {item.name} à votre inventaire, car il dépasse le poids maximum autorisé ({self.max_weight} kg).\n")
+            return False
+
+        self.inventory[item.name] = item
+        print(f"\n{item.name} a été ajouté à votre inventaire.\n")
+        return True
+
+    def remove_from_inventory(self, item_name):
         """
-        if self.current_room is None:
-            print("Vous n'êtes pas dans une pièce.")
-            return
-        print(self.current_room.get_long_description())
+        Retire un item de l'inventaire du joueur.
+
+        Args:
+            item_name (str): Le nom de l'objet à retirer.
+
+        Returns:
+            bool: True si l'objet a été retiré, False s'il n'est pas dans l'inventaire.
+        """
+        if item_name not in self.inventory:
+            print(f"\n{item_name} n'est pas dans votre inventaire.\n")
+            return False
+
+        del self.inventory[item_name]
+        print(f"\n{item_name} a été retiré de votre inventaire.\n")
+        return True
+
+    def get_inventory(self):
+        """
+        Retourne une liste des objets dans l'inventaire.
+
+        Returns:
+            str: Description des objets dans l'inventaire.
+        """
+        if not self.inventory:
+            return "Votre inventaire est vide."
+
+        inventory_string = "\nVotre inventaire contient les objets suivants:\n"
+        for item_name, item in self.inventory.items():
+            inventory_string += f"    - {item_name}: {item.description} (Poids: {item.weight} kg)\n"
+        return inventory_string
+
+   

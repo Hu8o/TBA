@@ -2,7 +2,6 @@
 from item import Inventory
 
 class Room:
-
     """
     Représente une pièce dans un système de navigation.
 
@@ -51,7 +50,7 @@ class Room:
     
     Sorties: sud
     """
-
+    
     # Define the constructor. 
     def __init__(self, name, description):
         self.name = name
@@ -59,7 +58,23 @@ class Room:
         self.exits = {}
         self.inventory = Inventory() # Initialisation de l'inventaire à vide
         self.items = []  # Initialisation des items de la pièce
+        self.characters=[]
 
+    def add_character(self, character):
+        """
+        Ajoute un personnage à la pièce.
+        """
+        self.characters.append(character)
+        character.current_room = self
+
+    def get_characters_description(self):
+        """
+        Retourne une description des personnages présents dans la pièce.
+        """
+        if not self.characters:
+            return "Il n'y a personne ici."
+        descriptions = [f"- {char.name}: {char.description}" for char in self.characters]
+        return "Vous voyez ici :\n" + "\n".join(descriptions)
 
     
     # Define the get_exit method.

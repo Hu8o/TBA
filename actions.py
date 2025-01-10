@@ -176,74 +176,49 @@ class Actions:
         print(game.player.get_history())
         return True
 
-    def look(game, list_of_words, number_of_parameters):
+    def look(game, list_of_words=None, number_of_parameters=None):
         """
-        Affiche la liste des objets présents dans la pièce actuelle du joueur.
+    Affiche les détails de la pièce actuelle, y compris les objets et les personnages présents.
 
-        Args:
-            game (Game): Le jeu en cours.
-            list_of_words (list): La liste des mots dans la commande.
-            number_of_parameters (int): Le nombre de paramètres attendu par la commande.
+    Args:
+        game (Game): Le jeu en cours.
+        list_of_words (list, optional): La liste des mots dans la commande.
+        number_of_parameters (int, optional): Le nombre de paramètres attendu par la commande.
 
-        Returns:
-            bool: True si la commande a été exécutée avec succès, False sinon.
-
-        Examples:
-
-        >>> from game import Game
-        >>> game = Game()
-        >>> game.setup()
-        >>> look(game, ["look"], 0)
-        True
-        >>> look(game, ["look", "extra"], 0)
-        False
-        """
-        l = len(list_of_words)
-        
-        # Vérifier si le nombre de paramètres est correct.
-        if l != number_of_parameters + 1:
-            command_word = list_of_words[0]
-            print(MSG0.format(command_word=command_word))
+    Returns:
+        bool: True si la commande a été exécutée avec succès, False sinon.
+    """
+    # Validation des arguments (si nécessaire).
+        if list_of_words and len(list_of_words) > 1:
+            print("La commande 'look' ne prend pas de paramètres.")
             return False
 
-        # Obtenir la pièce actuelle du joueur.
+    # Reste du code pour afficher les détails de la pièce.
         player = game.player
         current_room = player.current_room
 
-        # Si le joueur n'est dans aucune pièce, afficher un message d'erreur.
         if current_room is None:
-            print("\nErreur : Le joueur n'est dans aucune pièce.\n")
+            print("\nErreur : Vous n'êtes dans aucune pièce.\n")
             return False
 
-        # Afficher les objets présents dans la pièce.
-        print(current_room.get_inventory())
-        return True
+        print(current_room.get_long_description())
 
-    @staticmethod
-    def take(player, item_name):
-        """
-        Permet au joueur de prendre un item dans la pièce actuelle, sous réserve de la limite de poids.
-
-        Args:
-            player (Player): Le joueur.
-            item_name (str): Le nom de l'item à prendre.
-
-        Returns:
-            None
-        """
-        item_to_take = next((item for item in player.current_room.items if item.name == item_name),None)
-        if item_to_take:
-            # Vérifier la capacité de poids restante
-            if player.current_inventory_weight() + item_to_take.weight > player.max_weight:
-                print(f"\nErreur : Vous ne pouvez pas prendre '{item_name}' car cela dépasse votre capacité maximale de {player.max_weight} kg.")
-                return
-
-            # Ajouter l'objet à l'inventaire
-            player.inventory.append(item_to_take)
-            player.current_room.items.remove(item_to_take)
-            print(f"\nVous avez pris l'objet '{item_name}'.")
+        inventory = current_room.get_inventory()
+        if inventory:
+            print("\nObjets présents dans la pièce :")
+            for item in inventory:
+                print(f"    - {item.name}: {item.description} ({item.weight} kg)")
         else:
-            print(f"\nErreur : L'objet '{item_name}' n'est pas présent dans cette pièce.")
+            print("\nIl n'y a aucun objet dans cette pièce.")
+
+        if hasattr(current_room, 'characters') and current_room.characters:
+            print("\nPersonnages présents dans la pièce :")
+            for character in current_room.characters:
+                print(f"    - {character.name}: {character.description}")
+        else:
+            print("\nIl n'y a aucun personnage dans cette pièce.")
+
+        return True
 
     @staticmethod
     def drop(player, item_name):
@@ -297,3 +272,46 @@ class Actions:
             print("\nVotre inventaire contient :")
             for item in player.inventory:
                 print(f"- {item}")
+
+    @staticmethod
+    def take(game, list_of_words, number_of_parameters):
+        """
+        Permet au joueur de prendre un objet dans la pièce actuelle et de l'ajouter à son inventaire.
+
+        Args:
+            game (Game): Le jeu en cours.
+            list_of_words (list): La commande entrée par le joueur.
+            number_of_parameters (int): Le nombre de paramètres attendu par la commande.
+
+        Returns:
+            bool: True si l'objet a été pris avec succès, False sinon.
+        """
+        # Vérification du nombre de paramètres.
+        if len(list_of_words) != 2:
+            print("La commande 'take' nécessite un paramètre : le nom de l'objet.")
+            return False
+
+        item_name = list_of_words[1]
+        player = game.player
+        current_room = player.current_room
+
+        if not current_room:
+            print("Vous n'êtes dans aucune pièce.")
+            return False
+
+        # Rechercher l'item dans la pièce actuelle.
+        item = current_room.inventory.find_item_by_name(item_name)
+        if not item:
+            print(f"L'objet '{item_name}' n'est pas présent dans cette pièce.")
+            return False
+
+        # Vérifier si le joueur peut transporter l'objet.
+        if player.current_inventory_weight() + item.weight > player.max_weight:
+            print("Vous ne pouvez pas porter cet objet. Votre inventaire est trop lourd.")
+            return False
+
+        # Ajouter l'objet à l'inventaire du joueur et le retirer de la pièce.
+        player.inventory.add_item(item)
+        current_room.inventory.remove_item(item)
+        print(f"Vous avez pris '{item_name}'.")
+        return True

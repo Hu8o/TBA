@@ -6,6 +6,8 @@ from room import Room
 from player import Player
 from command import Command
 from actions import Actions
+#from item import Item
+from character import Character
 
 class Game:
 
@@ -116,7 +118,7 @@ class Game:
         human3.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":safe2,"U":None,"D":None}
         safe1.exits={"N":None,"E":None,"S":None,"O":None,"NO":safe2,"NE":human2,"SO":mountain,"SE":None,"U":None,"D":None}
         safe2.exits={"N":None,"E":None,"S":None,"O":None,"NO":human3,"NE":festin4,"SO":None,"SE":safe1,"U":None,"D":None}
-        festin1.exits={"N":None,"E":None,"S":river,"O":None,"NO":None,"NE":None,"SO":forest,"SE":None,"U":None,"D":None}
+        festin1.exits={"N":None,"E":None,"S":river,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":None}
         festin2.exits={"N":None,"E":None,"S":None,"O":None,"NO":None,"NE":forest,"SO":None,"SE":None,"U":None,"D":None}
         festin3.exits={"N":prairie,"E":None, "S":None,"O":None,"NO":None,"NE":None,"SO":None,"SE":None,"U":None,"D":None}
         festin4.exits={"N":None,"E":None, "S":None,"O":None,"NO":None,"NE":None,"SO":safe2,"SE":None,"U":None,"D":None}
@@ -150,6 +152,29 @@ class Game:
 
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = cave
+
+    # Setup items
+
+    #viande1 = Item("Viande 1kg", "Votre loup a trouvé un beau morceau de viande", 0.1)
+    #self.items[viande1]
+    #badge_tortue = Item("Badge tortue", "Votre loup a débloqué sa peur de l'eau", 0.1)
+    #viande2 = Item("Viande 1kg", "Votre loup vient d'attraper un beau pigeon !", 1)
+    #badge_ecureuil = Item("Badge écureuil", "Votre loup a débloqué la compétence de grimper aux arbres!", 1)
+    #badge_dauphin = Item("Badge dauphin", "Votre loup a débloqué la nage comme compétence", 0.1)
+    #badge_tueur = Item("Badge tueur", "Votre loup a débloqué la compétence prédateur", 0.1)
+    #badge_phantom = Item("Badge phantom", "Votre loup a débloqué la discrétion comme compétence", 0.1)
+
+
+
+    # 2. Créer un personnage nommé "Le Grand Loup"
+    le_grand_loup = Character(
+        name="Le Grand Loup",
+        description="Un loup imposant avec des yeux perçants et une allure féroce.",
+        current_room=great_cave,
+        msgs=["Le Grand Loup grogne doucement, montrant ses crocs.","Ses yeux brillent dans la pénombre, vous observant attentivement.","Il se tient immobile, un hurlement résonne au loin."])
+
+    # 3. Ajouter le personnage à la pièce
+    great_cave.add_character(le_grand_loup)
 
     # Play the game
     def play(self):
