@@ -97,29 +97,19 @@ class Actions:
 
     def back(game, list_of_words, number_of_parameters):
         """
-        Permet au joueur de revenir à la pièce précédente.
+    Action pour revenir à la pièce précédente.
 
-        Args:
-            game (Game): Le jeu en cours.
-            list_of_words (list): Les mots de la commande.
-            number_of_parameters (int): Nombre de paramètres attendus.
-
-        Returns:
-            bool: True si la commande est exécutée avec succès, False sinon.
-        """
-        l = len(list_of_words)
-        # Vérifier le nombre de paramètres
-        if l != number_of_parameters + 1:
-            command_word = list_of_words[0]
-            print(MSG0.format(command_word=command_word))
-            return False
-
-        # Tenter de revenir en arrière
+    Args:
+        game (Game): Instance du jeu.
+        list_of_words (list): Liste des mots de la commande (non utilisé ici).
+        number_of_parameters (int): Nombre de paramètres (non utilisé ici).
+    """
         if game.player.back():
-            # Afficher l'historique après le retour en arrière
-            print(game.player.get_history())
-            return True
-        return False
+        # Si le joueur a pu revenir, on affiche une description de la pièce actuelle.
+            print(game.player.current_room.get_long_description())
+        else:
+        # Si le joueur ne peut pas revenir en arrière.
+            print("Vous ne pouvez pas revenir en arrière.")
 
 
     
@@ -204,19 +194,21 @@ class Actions:
         print(current_room.get_long_description())
 
         inventory = current_room.get_inventory()
-        if inventory:
+        """if inventory:
             print("\nObjets présents dans la pièce :")
             for item in inventory:
                 print(f"    - {item.name}: {item.description} ({item.weight} kg)")
         else:
-            print("\nIl n'y a aucun objet dans cette pièce.")
+            print("\nIl n'y a aucun objet dans cette pièce.")"""
 
-        if hasattr(current_room, 'characters') and current_room.characters:
-            print("\nPersonnages présents dans la pièce :")
-            for character in current_room.characters:
-                print(f"    - {character.name}: {character.description}")
-        else:
+        try:
+            if current_room.characters:
+                print("\nPersonnages présents dans la pièce :")
+                for character in current_room.characters:
+                    print(f"    - {character.name}: {character.description}")
+        except AttributeError:
             print("\nIl n'y a aucun personnage dans cette pièce.")
+
 
         return True
 

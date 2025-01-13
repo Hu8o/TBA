@@ -73,7 +73,21 @@ class Player():
         print(self.current_room.get_long_description())
         return True
 
-  
+    def back(self):
+        """
+        Permet au joueur de revenir à la pièce précédente.
+
+        Returns:
+            bool: True si le joueur est revenu à la pièce précédente, False sinon.
+        """
+        if self.previous_room is None:
+            print("\nIl n'y a aucune pièce précédente à laquelle revenir.\n")
+            return False
+
+        self.current_room, self.previous_room = self.previous_room, self.current_room
+        print(f"\nVous êtes retourné dans la pièce précédente : {self.current_room.name}\n")
+        return True
+        
     def get_history(self):
         """
         Retourne une description des pièces visitées par le joueur.

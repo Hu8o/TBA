@@ -66,6 +66,13 @@ class Room:
         """
         self.characters.append(character)
         character.current_room = self
+    
+    def add_item(self, item):
+        """
+        Ajoute un item à la pièce.
+        """
+        self.items.append(item)
+        item.current_room = self
 
     def get_characters_description(self):
         """
