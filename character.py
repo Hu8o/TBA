@@ -1,3 +1,5 @@
+import random
+
 class Character:
     """
     Représente un personnage non joueur (PNJ) dans le jeu.
@@ -76,3 +78,15 @@ class Character:
         Affiche la description du personnage.
         """
         print(f"{self.name}: {self.description}")
+
+
+    def get_random_message(self):
+        """
+        Retourne un message aléatoire parmi les messages du personnage.
+
+        Returns:
+            str: Un message aléatoire.
+        """
+        if not self.msgs:
+            return "Le personnage reste silencieux."
+        return random.choice(self.msgs)

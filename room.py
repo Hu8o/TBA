@@ -123,3 +123,18 @@ class Room:
             if item.name.lower() == item_name.lower():
                 return item
         return None
+
+    def get_character_by_name(self, character_name):
+        """
+        Recherche un personnage par son nom dans la pièce.
+
+        Args:
+            character_name (str): Le nom du personnage.
+
+        Returns:
+            Character: Le personnage correspondant, ou None si non trouvé.
+        """
+        for character in self.characters:
+            if character.name.lower() == character_name.lower():
+                return character
+        return None

@@ -18,42 +18,57 @@ MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
 
 class Actions:
 
-    def go(game, list_of_words, number_of_parameters):
+    @staticmethod
+    def go(game, params, num_params):
         """
-        Move the player in the direction specified by the parameter.
-        The parameter must be a cardinal direction (N, E, S, O).
+        Permet au joueur de se déplacer dans une direction, avec gestion des conditions de victoire/défaite
+        et de l'historique des pièces visitées.
 
         Args:
-            game (Game): The game object.
-            list_of_words (list): The list of words in the command.
-            number_of_parameters (int): The number of parameters expected by the command.
+            game (Game): L'instance du jeu.
+            params (list): La commande entrée par le joueur, avec la direction en deuxième mot.
+            num_params (int): Le nombre attendu de paramètres pour la commande.
 
         Returns:
-            bool: True if the command was executed successfully, False otherwise.
+            None
         """
-        player = game.player
-        l = len(list_of_words)
+        if len(params) < 2:
+            print("\nVous devez spécifier une direction.")
+            return
 
-        # If the number of parameters is incorrect, print an error message and return False.
-        if l != number_of_parameters + 1:
-            command_word = list_of_words[0]
-            print(MSG1.format(command_word=command_word))
-            return False
+        direction = params[1].upper()
+        current_room = game.player.current_room
 
-        # Get the direction from the list of words.
-        direction_input = list_of_words[1]
-        direction = game.direction_syn.get(direction_input, None)
+        if direction not in current_room.exits or current_room.exits[direction] is None:
+            print("\nVous ne pouvez pas aller dans cette direction.")
+            return
 
-        # Validate the direction.
-        if direction is None:
-            print(f"\nErreur : '{direction_input}' n'est pas une direction valide. Les directions valides sont : {', '.join(game.valide_directions)}.\n")
-            return False
+        # Récupère la pièce suivante
+        next_room = current_room.exits[direction]
 
-        # Move the player in the direction specified by the parameter.
-        player.move(direction)
-        print(player.get_history())
+        # Ajoute la pièce actuelle à l'historique avant tout déplacement
+        if not hasattr(game, 'room_history'):
+            game.room_history = []
+        game.room_history.append(current_room)
 
-        return True
+        # Vérifie si le joueur entre dans "River" sans le "Badge tortue"
+        if next_room.name == "River" and not any(item.name == "Badge tortue" for item in game.player.inventory):
+            print("\nVous avez essayé de traverser la rivière sans le 'Badge tortue'. Vous avez perdu !")
+            game.finished = True
+            return
+
+        # Vérifie si le joueur entre dans "Bear_cave" (défaite automatique)
+        if next_room.name == "Bear_cave":
+            print("\nVous avez osé entrer dans la tanière de l'ours. Votre louveteau ne fait pas le poids face à un tel adversaire.")
+            print("Vous avez perdu !")
+            game.finished = True
+            return
+
+        # Déplace le joueur dans la nouvelle pièce
+        game.player.current_room = next_room
+        print(f"\nVous êtes maintenant dans : {next_room.name}.")
+        print(next_room.get_long_description())
+
 
 
     def quit(game, list_of_words, number_of_parameters):
@@ -297,3 +312,30 @@ class Actions:
             print(f"\nVous avez pris l'item '{item.name}'.")
         else:
             print(f"\nL'item '{item_name}' n'est pas dans cette pièce.")
+
+    @staticmethod
+    def talk(game, params, num_params):
+        """
+        Permet au joueur de parler à un personnage dans la pièce actuelle.
+
+        Args:
+            game (Game): L'instance du jeu.
+            params (list): Les mots de la commande, où le deuxième mot est le nom du personnage.
+            num_params (int): Le nombre attendu de paramètres pour la commande.
+
+        Returns:
+            None
+        """
+        if len(params) < 2:
+            print("\nVous devez spécifier à qui vous voulez parler.")
+            return
+
+        character_name = " ".join(params[1:]).lower()  # Nom insensible à la casse
+        current_room = game.player.current_room
+
+        # Vérifie si le personnage est présent dans la pièce
+        character = current_room.get_character_by_name(character_name)
+        if character:
+            print(f"\n{character.name} vous dit : \"{character.get_random_message()}\"")
+        else:
+            print(f"\nIl n'y a pas de personnage nommé '{character_name}' dans cette pièce.")

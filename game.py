@@ -49,8 +49,9 @@ class Game:
             "take": Command("take", "Permet de prendre un item dans la pièce actuelle.", Actions.take, 1),
             "look": Command("look", "Pemret de voir les items dans la pièce actuelle.",Actions.look,1),
             "drop": Command("drop", "Permet de déposer un item dans la pièce actuelle.", Actions.drop, 1),
-            "check":Command("check","Pemret de regarder le contenu de son sac", Actions.check,0)
-}
+            "check":Command("check","Pemret de regarder le contenu de son sac", Actions.check,0),
+            "talk": Command("talk", "Permet de parler à un personnage dans la pièce actuelle.", Actions.talk, 1)
+}           
        
         # Setup rooms
 
@@ -151,7 +152,20 @@ class Game:
         viande3 = Item("viande", "Votre loup a trouvé une carcasse de cerf !", 0.1)
         festin2.add_item(viande3)
 
+        # Liste de tous les items dans le jeu
+        self.all_items = [viande1, badge_tortue, viande2, badge_ecureuil, badge_dauphin, badge_tueur, badge_phantom]
+   
     # 2. Création du personnage nommé "Le Grand Loup"
+        la_louve = Character(
+        name="La Louve",
+        description="Une louve majestueuse et protectrice qui veille sur la tanière.",
+        current_room=None,  # Sera défini comme "cave"
+        msgs=[
+            "Mon petit, tu viens de naître, tu dois faire tes preuves face au grand loup pour faire partie des nôtres."
+        ]
+    )
+        
+        
         le_grand_loup = Character(
         name="Le Grand Loup",
         description="Un loup imposant avec des yeux perçants et une allure féroce.",
@@ -160,6 +174,7 @@ class Game:
 
     # 3. Ajouter le personnage à la pièce
         great_cave.add_character(le_grand_loup)
+        cave.add_character(la_louve)
 
     # Play the game
 
@@ -173,21 +188,23 @@ class Game:
         return None
 
     # Process the command entered by the player
-    def process_command(self, command_string) -> None:
-       
+    def process_command(self, command_string):
         if not command_string.strip():
             return
-        # Split the command string into a list of words
+
         list_of_words = command_string.split(" ")
         command_word = list_of_words[0]
 
-        # If the command is not recognized, print an error message
         if command_word not in self.commands.keys():
             print(f"\nCommande '{command_word}' non reconnue. Entrez 'help' pour voir la liste des commandes disponibles.\n")
-        # If the command is recognized, execute it
         else:
             command = self.commands[command_word]
             command.action(self, list_of_words, command.number_of_parameters)
+
+            # Vérification de la victoire après chaque commande
+            if self.check_victory():
+                print("\nFélicitations ! Vous avez ramené tous les items dans la 'Great_cave'. Vous avez gagné !")
+                self.finished = True
 
     # Print the welcome message
     def print_welcome(self):
@@ -196,6 +213,21 @@ class Game:
         #
         print(self.player.current_room.get_long_description())
     
+    def check_victory(self):
+        great_cave = next((room for room in self.rooms if room.name == "great_cave"), None)
+        if not great_cave:
+            print("Erreur : La pièce 'Great_cave' est introuvable.")
+            return False
+
+        missing_items = [item for item in self.all_items if item not in great_cave.items]
+
+        if missing_items:
+            print("\nItems manquants dans 'Great_cave' :")
+            for item in missing_items:
+                print(f"- {item.name}")
+            return False
+
+        return True
 
 def main():
     # Create a game object and play the game
