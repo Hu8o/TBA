@@ -41,7 +41,7 @@ class Player():
         self.current_room = None
         self.previous_room = None
         self.history = []
-        self.inventory = {}  # Initialisation d'un inventaire vide
+        self.inventory = []  # Initialisation d'un inventaire vide
         self.max_weight = 5  # Poids maximum transportable
 
     def current_inventory_weight(self):
@@ -154,4 +154,5 @@ class Player():
             inventory_string += f"    - {item_name}: {item.description} (Poids: {item.weight} kg)\n"
         return inventory_string
 
-   
+
+

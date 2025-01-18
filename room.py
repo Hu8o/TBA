@@ -108,3 +108,18 @@ class Room:
 
     def get_inventory(self):
         return self.inventory.get_inventory()
+
+    def get_item_by_name(self, item_name):
+        """
+        Recherche un item par son nom dans la pièce.
+
+        Args:
+            item_name (str): Le nom de l'item recherché.
+
+        Returns:
+            Item: L'item correspondant, ou None si non trouvé.
+        """
+        for item in self.items:
+            if item.name.lower() == item_name.lower():
+                return item
+        return None
