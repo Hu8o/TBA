@@ -1,45 +1,53 @@
-# This file contains the Command class.
+# Ce fichier contient la classe Command.
 
 class Command:
     """
-    This class represents a command. A command is composed of a command word, a help string, an action and a number of parameters.
+    Représente une commande dans le jeu, composée d'un mot de commande, 
+    d'une description d'aide, d'une action et du nombre de paramètres requis.
 
-    Attributes:
-        command_word (str): The command word.
-        help_string (str): The help string.
-        action (function): The action to execute when the command is called.
-        number_of_parameters (int): The number of parameters expected by the command.
+    Attributs :
+        command_word (str) : Le mot utilisé pour invoquer la commande.
+        help_string (str) : Une description de l'action de la commande.
+        action (function) : La fonction exécutée lorsque la commande est invoquée.
+        number_of_parameters (int) : Le nombre de paramètres requis par la commande.
 
-    Methods:
-        __init__(self, command_word, help_string, action, number_of_parameters) : The constructor.
-        __str__(self) : The string representation of the command.
+    Méthodes :
+        __init__ : Initialise une instance de Command avec les attributs donnés.
+        __str__ : Retourne une représentation textuelle de la commande.
 
-    Examples:
-
-    >>> from actions import go
-    >>> command = Command("go", "Permet de se déplacer dans une direction.", go, 1)
-    >>> command.command_word
-    'go'
-    >>> command.help_string
-    'Permet de se déplacer dans une direction.'
-    >>> type(command.action)
-    <class 'function'>
-    >>> command.number_of_parameters
-    1
-
+    Exemples :
+        >>> from actions import go
+        >>> commande = Command("aller", "Permet de se déplacer.", go, 1)
+        >>> commande.command_word
+        'aller'
+        >>> commande.help_string
+        'Permet de se déplacer.'
+        >>> type(commande.action)
+        <class 'function'>
+        >>> commande.number_of_parameters
+        1
     """
 
-    # The constructor.
     def __init__(self, command_word, help_string, action, number_of_parameters):
+        """
+        Initialise une instance de la classe Command avec les attributs spécifiés.
+
+        Args :
+            command_word (str) : Le mot de commande.
+            help_string (str) : Une description de la commande.
+            action (function) : La fonction exécutée lors de l'invocation.
+            number_of_parameters (int) : Le nombre de paramètres attendus.
+        """
         self.command_word = command_word
         self.help_string = help_string
         self.action = action
         self.number_of_parameters = number_of_parameters
-    
-    # The string representation of the command.
+
     def __str__(self):
-        return  self.command_word \
-                + self.help_string
-    
+        """
+        Retourne une représentation textuelle de la commande.
 
-
+        Returns :
+            str : Le mot de commande suivi de sa description d'aide.
+        """
+        return f"{self.command_word} - {self.help_string}"

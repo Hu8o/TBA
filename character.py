@@ -1,3 +1,17 @@
+"""
+Module character.py
+
+Ce module définit la classe `Character`, qui représente un personnage non joueur (PNJ)
+dans le jeu. Les personnages peuvent avoir un nom, une description, des messages associés,
+et peuvent se déplacer entre différentes pièces. Le module offre des fonctionnalités
+d'interaction avec ces personnages, telles que l'ajout de messages et l'affichage de la
+description ou des messages du personnage.
+
+Classes :
+    Character : Représente un personnage dans le jeu, avec des fonctionnalités d'interaction,
+               de déplacement et de gestion de messages.
+"""
+
 import random
 
 class Character:
@@ -13,17 +27,19 @@ class Character:
 
     def __init__(self, name, description, current_room=None, msgs=None):
         """
-        Initialise un personnage avec un nom, une description, une pièce actuelle et une liste de messages.
+        Initialise un personnage avec un nom, une description,
+        une pièce actuelle et une liste de messages.
 
         Args:
             name (str): Le nom du personnage.
             description (str): La description du personnage.
-            current_room (Room, optional): La pièce initiale où se trouve le personnage. Par défaut à None.
+            current_room (Room, optional): La pièce initiale où se trouve le personnage.
+            Par défaut à None.
         """
         self.name = name
         self.description = description
         self.current_room = current_room
-        self.msgs = msgs if msgs is not None else [] 
+        self.msgs = msgs if msgs is not None else []
 
     def add_message(self, message):
         """
