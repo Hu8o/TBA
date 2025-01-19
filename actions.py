@@ -80,7 +80,19 @@ class Actions:
             game.finished = True
             return
 
-        if next_room.name in ["human1", "human2", "human3"]:
+        if next_room.name == "Human1":
+            print("\nVous avez été capturé et tué.")
+            print("Vous avez perdu !")
+            game.finished = True
+            return
+
+        if next_room.name == "Human2":
+            print("\nVous avez été capturé et tué.")
+            print("Vous avez perdu !")
+            game.finished = True
+            return
+
+        if next_room.name == "Human3":
             print("\nVous avez été capturé et tué.")
             print("Vous avez perdu !")
             game.finished = True
@@ -266,7 +278,7 @@ class Actions:
         print(current_room.get_long_description())
 
         if "Bear_cave" in [exit.name for exit in current_room.exits.values() if exit]:
-            print("\nUn avertissement résonne dans votre esprit : \"Ne vous approchez pas de la tanière de l'ours, c'est trop dangereux !\"")
+            print("\nUn avertissement résonne dans votre esprit : \"Ne vous approchez pas de la tanière de l'ours au sud, c'est trop dangereux !\"")
 
         return True
 
@@ -276,36 +288,26 @@ class Actions:
         """
         Permet au joueur de déposer un item de son inventaire dans la pièce actuelle.
 
-        Cette méthode permet au joueur de spécifier un item à déposer de son inventaire dans
-        la pièce actuelle. Si l'item est présent dans l'inventaire du joueur, il est retiré de
-        l'inventaire et ajouté à la pièce.
-
         Args:
-            game (Game): L'instance du jeu qui permet d'accéder à l'état du jeu, à l'inventaire du
-                         joueur et à la pièce actuelle.
-            params (list): La liste des mots de la commande, où le deuxième mot est l'item à déposer.
-            num_params (int): Le nombre attendu de paramètres pour la commande. Utilisé pour vérifier
-                               que la commande a été correctement entrée.
+            game (Game): L'instance du jeu.
+            params (list): La liste des mots de la commande, où le reste après le premier mot est l'item à déposer.
+            num_params (int): Le nombre attendu de paramètres pour la commande.
 
         Returns:
             None
-
-        Notes:
-            - Si le joueur ne spécifie pas l'item, un message d'erreur est affiché.
-            - Si l'item n'est pas trouvé dans l'inventaire du joueur, un message d'erreur est affiché.
-            - Si l'item est trouvé, il est retiré de l'inventaire et ajouté à la pièce.
         """
         if len(params) < 2:
             print("\nVous devez spécifier quel item vous voulez déposer.")
             return
 
-        item_name = params[1]  # Récupère le nom de l'item
+        # Reconstitue le nom complet de l'item (cas des noms composés)
+        item_name = " ".join(params[1:]).lower()
         current_room = game.player.current_room
 
         # Recherche l'item dans l'inventaire du joueur
         item_to_drop = None
         for item in game.player.inventory:
-            if item.name.lower() == item_name.lower():
+            if item.name.lower() == item_name:
                 item_to_drop = item
                 break
 
@@ -391,16 +393,23 @@ class Actions:
         else:
             print(f"\nIl n'y a pas de personnage nommé '{character_name}' dans cette pièce.")
 
-    def check(self):
+    @staticmethod
+    def check(game, _, num_params):
         """
-        Vérifie et affiche le contenu de l'inventaire du joueur.
+        Affiche le contenu de l'inventaire du joueur.
 
-        Returns:
-            None
+        Args:
+            game (Game): L'instance du jeu.
+            _ (list): La commande entrée par le joueur (non utilisée ici).
+            num_params (int): Le nombre attendu de paramètres pour la commande.
         """
-        if not self.player.inventory:
-            print("\nVotre inventaire est vide.\n")
-        else:
-            print("\nVoici le contenu de votre inventaire :")
-            for item_name, item in self.player.inventory.items():
-                print(f"  - {item_name} : {item.description} (Poids : {item.weight} kg)")
+        inventory = game.player.inventory
+
+        if not inventory:
+            print("\nVotre inventaire est vide.")
+            return
+
+        print("\nVoici le contenu de votre inventaire :")
+        for item in inventory:
+            print(f"- {item.name} : {item.description} (Poids : {item.weight} kg)")
+

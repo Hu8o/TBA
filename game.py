@@ -509,7 +509,7 @@ class Game:
 
 
         # Liste de tous les items dans le jeu
-        self.all_items = [viande3,viande2,viande4,viande5,badge_dauphin,badge_ecureuil,badge_phantom,badge_tueur]  # Autres items peuvent être ajoutés ici.
+        self.all_items = [badge_tortue,badge_ecureuil,badge_dauphin,badge_phantom,badge_tueur,viande3]  # Autres items peuvent être ajoutés ici.
 
         # Création des personnages
         la_louve = Character(
@@ -526,9 +526,7 @@ class Game:
             description="Un loup imposant avec des yeux perçants et une allure féroce.",
             current_room=great_cave,
             msgs=[
-                "Le Grand Loup grogne doucement, montrant ses crocs.",
-                "Ses yeux brillent dans la pénombre, vous observant attentivement.",
-                "Il se tient immobile, un hurlement résonne au loin."
+                "Mon petit tu dois faire tes preuves si tu veux rester dans la meute ! Ramène moi les items manquants !"
             ]
         )
 
@@ -659,8 +657,7 @@ class Game:
         # Victoire
         self.display_victory_image_fullscreen()
         print("\033[32m\nFélicitations ! Vous avez ramené tous les items dans la 'Great_cave'. Vous avez gagné !\033[0m")
-        return True
-
+        return True 
 
 
 
@@ -672,3 +669,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
