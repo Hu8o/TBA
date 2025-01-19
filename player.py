@@ -37,7 +37,7 @@ class Player:
         self.current_room = None
         self.previous_room = None
         self.history = []
-        self.inventory = {}  # Utilisation d'un dictionnaire pour l'inventaire
+        self.inventory = []  # Utilisation d'un dictionnaire pour l'inventaire
         self.max_weight = max_weight
 
     def current_inventory_weight(self):

@@ -509,7 +509,7 @@ class Game:
 
 
         # Liste de tous les items dans le jeu
-        self.all_items = [viande3]  # Autres items peuvent être ajoutés ici.
+        self.all_items = [viande3,viande2,viande4,viande5,badge_dauphin,badge_ecureuil,badge_phantom,badge_tueur]  # Autres items peuvent être ajoutés ici.
 
         # Création des personnages
         la_louve = Character(
